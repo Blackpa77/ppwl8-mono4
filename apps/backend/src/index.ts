@@ -17,8 +17,9 @@ const isBrowserRequest = (request: Request): boolean => {
 };
 
 const app = new Elysia()
+  // 1. KITA HARDCODE CORS PERSIS MONO 3 AGAR TIDAK CRASH KARENA BINTANG (*)
   .use(cors({ 
-    origin: [process.env.FRONTEND_URL ?? "http://localhost:5173", process.env.TEST_URL ?? "*"], 
+    origin: ["http://localhost:5173", "http://localhost:5174", "http://127.0.0.1:5173"], 
     credentials: true 
   }))
   .use(swagger())
@@ -26,13 +27,13 @@ const app = new Elysia()
 
   .onRequest(({ request, set }) => {
     const origin = request.headers.get("origin");
-    const frontendUrl = process.env.FRONTEND_URL ?? "";
+    const frontendUrl = "http://localhost:5173"; // Kita hardcode biar super aman
 
     if (origin && origin === frontendUrl) return;
 
     if (isBrowserRequest(request)) {
       const url = new URL(request.url);
-      if (url.pathname.startsWith("/auth")) return;
+      if (url.pathname.startsWith("/auth")) return; // JALUR VIP LOGIN
 
       const key = url.searchParams.get("key");
       if (!key || key !== process.env.API_KEY) {
@@ -77,9 +78,11 @@ const app = new Elysia()
     if (session) {
       session.value = sessionId;
       session.maxAge = 60 * 60 * 24; 
+      session.path = "/"; // Pastikan kuki dibaca merata
     }
 
-    return redirect(`${process.env.FRONTEND_URL}/classroom`);
+    // REDIRECT DIHARDCODE SEPERTI MONO 3
+    return redirect("http://localhost:5173/classroom");
   })
 
   .get("/auth/me", ({ cookie: { session } }) => {

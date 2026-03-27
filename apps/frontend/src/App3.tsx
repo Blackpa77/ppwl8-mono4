@@ -225,7 +225,7 @@ export default function App() {
       )
       const d = await res.json()
       if (d.error) throw new Error(d.error)
-      items(d.data ?? [])
+      setItems(d.data ?? [])
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Terjadi error")
     } finally {
