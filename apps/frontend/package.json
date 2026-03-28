@@ -4,10 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "bunx kill-port 5173 && vite",
+    "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "start": "bunx kill-port 4173 && vite preview"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.8",

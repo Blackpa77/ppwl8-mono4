@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "bun run --filter '*' dev",
     "dev:frontend": "bun run --filter frontend dev",
+    "start": "bun run --env-file=apps/backend/.env.production --filter '*' start",
     "dev:backend": "bun run --filter backend dev",
     "build": "bun run --filter '*' build"
   },
